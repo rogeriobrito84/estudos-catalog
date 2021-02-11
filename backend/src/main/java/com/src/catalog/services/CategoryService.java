@@ -34,4 +34,8 @@ public class CategoryService {
         entity = repository.save(entity);
         return new CategoryDTO(entity);
     }
+
+    public CategoryDTO update(Long id, CategoryDTO dto) {
+        return null;
+    }
 }
