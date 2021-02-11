@@ -1,14 +1,15 @@
 package com.src.catalog.resources;
 
 import com.src.catalog.dto.CategoryDTO;
+import com.src.catalog.entities.Category;
 import com.src.catalog.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,6 +29,15 @@ public class CategoryResource {
     public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
         CategoryDTO category = service.findById(id);
         return  ResponseEntity.ok(category);
+    }
+
+    @PostMapping
+    public ResponseEntity<CategoryDTO> save(@RequestBody CategoryDTO dto) {
+        dto = service.save(dto);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequestUri().path("/{id}")
+                .buildAndExpand(dto.getId()).toUri();
+        return  ResponseEntity.created(uri).body(dto);
     }
 
 }
